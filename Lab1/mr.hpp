@@ -1,9 +1,9 @@
-#ifndef STUDENT_HPP
-#define STUDENT_HPP
+#ifndef MR_HPP
+#define MR_HPP
 
 #include <vector>
 
-namespace student {
+namespace mr {
 
 using namespace std;
 
@@ -13,4 +13,4 @@ void decode(const vector<bool> &input, vector<bool> &output);
 
 };
 
-#endif // STUDENT_HPP
+#endif // MR_HPP

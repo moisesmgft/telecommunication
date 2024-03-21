@@ -1,11 +1,13 @@
-#include "student.hpp"
+#include "mr.hpp"
 
-using namespace student;
+namespace mr {
 
 void encode(const vector<bool> &input, vector<bool> &output) {
 
 }
 
 void decode(const vector<bool> &input, vector<bool> &output) {
+
+}
 
 }
