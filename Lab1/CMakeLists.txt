@@ -9,7 +9,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED True)
 
 # Add library targets
 add_library(Hamming hamming.cpp)
-add_library(Student mr.cpp)
+add_library(MR mr.cpp)
 add_library(Bits bits.cpp)
 
 # Add the executable

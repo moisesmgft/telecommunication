@@ -8,10 +8,10 @@ namespace hamming {
 using namespace std;
 
 /// @brief 
-void encode(const vector<bool>& input, vector<bool>& output, int n);
+void encode(vector<bool>& input, vector<bool>& output);
 
 /// @brief 
-void decode(const vector<bool>& input, vector<bool>& output, int n);
+void decode(const vector<bool>& input, vector<bool>& output);
 
 };
 

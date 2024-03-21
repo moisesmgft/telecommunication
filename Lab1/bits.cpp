@@ -11,7 +11,7 @@ void generate_bits(vector<bool> &bits, int n, float q) {
 
     bits.assign(n,false);
     for (auto b: bits) 
-        if (dis(gen) < q + 1e-4)
+        if (dis(gen) < q + 1e-7)
             b  = true;
 
 }
@@ -24,7 +24,7 @@ void communicate_bits_through_bsc(const vector<bool> &input, vector<bool> &outpu
 
     output.assign(input.begin(), input.end());
     for (int i = 0; i < input.size(); i++)
-        if (dis(gen) < p + 1e-5) 
+        if (dis(gen) < p + 1e-7) 
             output[i] = !output[i];
 
 }
