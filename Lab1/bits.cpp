@@ -29,7 +29,7 @@ void communicate_bits_through_bsc(const vector<bool> &input, vector<bool> &outpu
 
 }
 
-double error_percentage(const vector<bool> &original, const vector<bool> decoded) {
+double error_percentage(const vector<bool> &original, const vector<bool> &decoded) {
 
     int size = min(original.size(), decoded.size());
     int error = 0;

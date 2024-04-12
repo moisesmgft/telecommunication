@@ -1,5 +1,4 @@
 #include "hamming.hpp"
-#include <iostream>
 
 namespace hamming {
 
@@ -53,28 +52,34 @@ void encode(vector<bool>& input, vector<bool>& output) {
 }
 
 void decode(const vector<bool>& input, vector<bool>& output) {
-    vector<bool> syndrome = multiplyByHTranspose(input);
 
-    int errorPosition = syndromeToPosition(syndrome);
+    int size = input.size();
+    int blocks = size / 7;
+    output.reserve(4*blocks);
+    
+    for (int i = 0; i < blocks; i++) {
 
-    cout << errorPosition << "\n";
+        vector<bool> block(input.begin() + 7*i, input.begin() + 7*i + 7);
+        vector<bool> syndrome = multiplyByHTranspose(block);
 
-    vector<bool> correctedOutput = input;
+        int errorPosition = syndromeToPosition(syndrome);
 
-    if (errorPosition > 0) { 
-        correctedOutput = input;
-        correctedOutput[errorPosition - 1] = !correctedOutput[errorPosition - 1];
-    } else {
-        correctedOutput = input;
+        vector<bool> correctedOutput = block;
+
+        if (errorPosition > 0) { 
+            correctedOutput = block;
+            correctedOutput[errorPosition - 1] = !correctedOutput[errorPosition - 1];
+        } else {
+            correctedOutput = block;
+        }
+        
+        
+        output.push_back(correctedOutput[0]); 
+        output.push_back(correctedOutput[1]); 
+        output.push_back(correctedOutput[2]); 
+        output.push_back(correctedOutput[3]); 
+
     }
-    
-    output.clear(); 
-    output.reserve(4);
-    
-    output.push_back(correctedOutput[0]); 
-    output.push_back(correctedOutput[1]); 
-    output.push_back(correctedOutput[2]); 
-    output.push_back(correctedOutput[3]); 
 }
 
 }

@@ -14,6 +14,8 @@ add_library(Bits bits.cpp)
 
 # Add the executable
 add_executable(Lab1 main.cpp)
+add_executable(Brute brute.cpp)
 
 # Link libraries with the executable
 target_link_libraries(Lab1 PUBLIC Hamming MR Bits)
+target_link_libraries(Brute PUBLIC Hamming MR Bits)
