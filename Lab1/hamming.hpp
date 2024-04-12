@@ -7,6 +7,13 @@ namespace hamming {
 
 using namespace std;
 
+const bool H[3][7] = {
+    {0, 0, 0, 1, 1, 1, 1},
+    {0, 1, 1, 0, 0, 1, 1},
+    {1, 0, 1, 0, 1, 0, 1}
+};
+
+
 /// @brief 
 void encode(vector<bool>& input, vector<bool>& output);
 
