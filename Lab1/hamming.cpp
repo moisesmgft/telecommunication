@@ -66,10 +66,8 @@ void decode(const vector<bool>& input, vector<bool>& output) {
 
         vector<bool> block(input.begin() + 7*i, input.begin() + 7*i + 7);
         vector<bool> syndrome = multiplyByHTranspose(block);
-        for(auto bit:syndrome) cout << bit; cout << "\n";
 
         int errorPosition = syndromeToPosition(syndrome);
-        cout << errorPosition << "\n";
 
         vector<bool> correctedOutput = block;
 
