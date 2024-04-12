@@ -1,4 +1,5 @@
 #include "hamming.hpp"
+#include <iostream>
 
 namespace hamming {
 
@@ -17,11 +18,15 @@ vector<bool> multiplyByHTranspose(const vector<bool>& input) {
 }
 
 int syndromeToPosition(const std::vector<bool>& syndrome) {
-    int position = 0;
-    for (int i = 0; i < syndrome.size(); i++) {
-        position += syndrome[i] << (syndrome.size() - i - 1);
-    }
-    return position;
+    if(syndrome == std::vector<bool>{1,1,1}) return 1;
+    if(syndrome == std::vector<bool>{1,0,1}) return 2;
+    if(syndrome == std::vector<bool>{1,1,0}) return 3;
+    if(syndrome == std::vector<bool>{0,1,1}) return 4;
+    if(syndrome == std::vector<bool>{1,0,0}) return 5;
+    if(syndrome == std::vector<bool>{0,1,0}) return 6;
+    if(syndrome == std::vector<bool>{0,0,1}) return 7;
+    return 0;
+
 }
 
 void encode(vector<bool>& input, vector<bool>& output) {
@@ -61,8 +66,10 @@ void decode(const vector<bool>& input, vector<bool>& output) {
 
         vector<bool> block(input.begin() + 7*i, input.begin() + 7*i + 7);
         vector<bool> syndrome = multiplyByHTranspose(block);
+        for(auto bit:syndrome) cout << bit; cout << "\n";
 
         int errorPosition = syndromeToPosition(syndrome);
+        cout << errorPosition << "\n";
 
         vector<bool> correctedOutput = block;
 
