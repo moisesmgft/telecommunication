@@ -1,4 +1,5 @@
 #include "hamming.hpp"
+#include <iostream>
 
 namespace hamming {
 
@@ -57,6 +58,8 @@ void decode(const vector<bool>& input, vector<bool>& output) {
 
     int errorPosition = syndromeToPosition(syndrome);
 
+    cout << errorPosition << "\n";
+
     vector<bool> correctedOutput = input;
 
     if (errorPosition > 0) { 
@@ -69,10 +72,10 @@ void decode(const vector<bool>& input, vector<bool>& output) {
     output.clear(); 
     output.reserve(4);
     
+    output.push_back(correctedOutput[0]); 
+    output.push_back(correctedOutput[1]); 
     output.push_back(correctedOutput[2]); 
-    output.push_back(correctedOutput[4]); 
-    output.push_back(correctedOutput[5]); 
-    output.push_back(correctedOutput[6]); 
+    output.push_back(correctedOutput[3]); 
 }
 
 }
