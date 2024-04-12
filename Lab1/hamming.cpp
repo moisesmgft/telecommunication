@@ -4,9 +4,9 @@ namespace hamming {
 
 void encode(vector<bool>& input, vector<bool>& output) {
     
-    int size = 1, original_size = input.size();
+    int size = 0, original_size = input.size();
     while (size < input.size())
-        size *= 4;
+        size += 4;
 
 
     for (int i = input.size(); i < size; i++)
@@ -24,7 +24,6 @@ void encode(vector<bool>& input, vector<bool>& output) {
         output[7*i + 6] = input[4*i] ^ input[4*i + 1] ^ input[4*i + 3];
     }
 
-    
     for (int i = original_size; i < size; i++)
         input.pop_back();
 
