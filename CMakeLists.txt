@@ -7,11 +7,13 @@ project(telecommunication VERSION 1.0)
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
 
+set(LIBRARY_OUTPUT_PATH ${CMAKE_BINARY_DIR}/lib)
+
 # Add library targets
 add_library(Hamming src/hamming.cpp)
+add_library(lpdc src/ldpc.cpp)
 add_library(MR src/mr.cpp)
 add_library(Bits src/bits.cpp)
-# add_library(LPDC src/ldpc.cpp)
 
 # Add the executable
 add_executable(Lab1 lab1.cpp)
@@ -19,4 +21,4 @@ add_executable(Lab2 lab2.cpp)
 
 # Link libraries with the executable
 target_link_libraries(Lab1 PUBLIC Hamming MR Bits)
-# target_link_libraries(Lab2 PUBLIC Hamming MR Bits LDPC)
+target_link_libraries(Lab2 PUBLIC Hamming MR Bits lpdc)
