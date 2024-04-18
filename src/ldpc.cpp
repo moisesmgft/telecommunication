@@ -51,22 +51,77 @@ void create_graph(int n, int dv, int dc, vector<vector<int>> &edges){
         }
     }
 
+}
 
+void encode(vector<bool> &input, vector<vector<int>> &graph, int N, vector<bool> &output) {
 
+    int M = size(graph), sz = 0, blocks = 0, original_sz = size(input);
 
+    while(sz < size(input))
+        sz += N, blocks++;
 
+    output.assign((N + M) * blocks, false);
+    while(size(input) < sz)
+        input.push_back(false);
+
+    for (int b = 0; b < blocks; b++) {
+        // Copy the message
+        for (int i = 0; i < N; i++)
+            output[(N + M) * b + i] = input[N * b + i];
+        // Write the parity bits
+        for (int i = 0; i < M; i++) {
+            bool x = 0;
+            for (auto j: graph[i])
+                x = (x != input[N * b + j]);
+            output[(N + M) * b + N + i] = x; 
+        }
+    }
+
+    while (size(input) != original_sz)
+        input.pop_back();
+
+}
+
+void decode(vector<bool> &input, vector<vector<int>> &graph, int N, vector<bool> &output, int max_iterations) {
+
+    int M = size(graph), blocks = 0;
+
+    while((N+M) * blocks < size(input))
+        blocks++;
+    output.assign(N * blocks, false);
+
+    bool change = true;
+    while(max_iterations-- && change) {
+
+        change = false;
+        for(int b = 0; b < blocks; b++) {
+            vector<int> wrong_cnt(N + M, 0);
+            for(int i = 0; i < M; i++) {
+                bool x = input[(N + M) * b + (N + i)];
+                for (auto j: graph[i])
+                    x = (x != input[(N + M) * b + j]);
+
+                if (x) {
+                    wrong_cnt[N + i]++;
+                    for (auto j: graph[i])
+                        wrong_cnt[j]++;
+                }
+            }
+
+            int id = max_element(wrong_cnt.begin(), wrong_cnt.end()) - wrong_cnt.begin();
+            if (wrong_cnt[id]) {
+                input[(N + M) * b + id] = !input[(N + M) * b + id];
+                change = true;
+            }
+
+        }
+
+    }
+
+    for(int b = 0; b < blocks; b++)
+        for(int i = 0; i < N; i++)
+            output[N * b + i] = input[(N + M) * b + i];
     
-
-
-
-}
-
-void encode(vector<bool> &input, vector<bool> &output) {
-
-}
-
-void decode(vector<bool> &input, vector<bool> &output) {
-
 }
 
 }
