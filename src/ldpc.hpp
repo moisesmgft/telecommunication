@@ -7,9 +7,7 @@ namespace ldpc {
 
 using namespace std;
 
-vector<vector<int>> edges;
-
-void create_graph(int n, int dv, int dc);
+void create_graph(int n, int dv, int dc, vector<vector<int>> &edges);
 
 void encode(vector<bool> &input, vector<bool> &output);
 
