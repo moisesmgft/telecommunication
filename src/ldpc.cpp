@@ -66,56 +66,22 @@ void create_graph(int n, int dv, int dc, vector<vector<int>> &edges){
     }
 }
 
-void encode(vector<bool> &input, vector<vector<int>> &graph, int N, vector<bool> &output) {
-
-    int M = graph.size(), sz = 0, blocks = 0, original_sz = input.size();
-
-    while(sz < input.size())
-        sz += N, blocks++;
-
-    output.assign((N + M) * blocks, false);
-    while(input.size() < sz)
-        input.push_back(false);
-
-    for (int b = 0; b < blocks; b++) {
-        // Copy the message
-        for (int i = 0; i < N; i++)
-            output[(N + M) * b + i] = input[N * b + i];
-        // Write the parity bits
-        for (int i = 0; i < M; i++) {
-            bool x = 0;
-            for (auto j: graph[i])
-                x = (x != input[N * b + j]);
-            output[(N + M) * b + N + i] = x; 
-        }
-    }
-
-    while (input.size() != original_sz)
-        input.pop_back();
-
-}
-
 void decode(vector<bool> &input, vector<vector<int>> &graph, int N, vector<bool> &output, int max_iterations) {
 
     int M = graph.size(), blocks = 0;
-
-    while((N+M) * blocks < input.size())
-        blocks++;
-    output.assign(N * blocks, false);
 
     bool change = true;
     while(max_iterations-- && change) {
 
         change = false;
         for(int b = 0; b < blocks; b++) {
-            vector<int> wrong_cnt(N + M, 0);
+            vector<int> wrong_cnt(N, 0);
             for(int i = 0; i < M; i++) {
-                bool x = input[(N + M) * b + (N + i)];
+                bool x = false;
                 for (auto j: graph[i])
-                    x = (x != input[(N + M) * b + j]);
+                    x = (x != input[N * b + j]);
 
                 if (x) {
-                    wrong_cnt[N + i]++;
                     for (auto j: graph[i])
                         wrong_cnt[j]++;
                 }
@@ -123,7 +89,7 @@ void decode(vector<bool> &input, vector<vector<int>> &graph, int N, vector<bool>
 
             int id = max_element(wrong_cnt.begin(), wrong_cnt.end()) - wrong_cnt.begin();
             if (wrong_cnt[id]) {
-                input[(N + M) * b + id] = !input[(N + M) * b + id];
+                input[N * b + id] = !input[N * b + id];
                 change = true;
             }
 
@@ -131,9 +97,7 @@ void decode(vector<bool> &input, vector<vector<int>> &graph, int N, vector<bool>
 
     }
 
-    for(int b = 0; b < blocks; b++)
-        for(int i = 0; i < N; i++)
-            output[N * b + i] = input[(N + M) * b + i];
+    output = input;
     
 }
 
