@@ -15,6 +15,8 @@ vector<int> random_vector(int size, int max) {
     std::unordered_set<int> unique_numbers;
     std::vector<int> random_values;
 
+    size = std::min(size, max);
+
     while (random_values.size() < size) {
         int number = dis(gen);
         if (unique_numbers.insert(number).second) {
@@ -55,13 +57,13 @@ void create_graph(int n, int dv, int dc, vector<vector<int>> &edges){
 
 void encode(vector<bool> &input, vector<vector<int>> &graph, int N, vector<bool> &output) {
 
-    int M = size(graph), sz = 0, blocks = 0, original_sz = size(input);
+    int M = graph.size(), sz = 0, blocks = 0, original_sz = input.size();
 
-    while(sz < size(input))
+    while(sz < input.size())
         sz += N, blocks++;
 
     output.assign((N + M) * blocks, false);
-    while(size(input) < sz)
+    while(input.size() < sz)
         input.push_back(false);
 
     for (int b = 0; b < blocks; b++) {
@@ -77,16 +79,16 @@ void encode(vector<bool> &input, vector<vector<int>> &graph, int N, vector<bool>
         }
     }
 
-    while (size(input) != original_sz)
+    while (input.size() != original_sz)
         input.pop_back();
 
 }
 
 void decode(vector<bool> &input, vector<vector<int>> &graph, int N, vector<bool> &output, int max_iterations) {
 
-    int M = size(graph), blocks = 0;
+    int M = graph.size(), blocks = 0;
 
-    while((N+M) * blocks < size(input))
+    while((N+M) * blocks < input.size())
         blocks++;
     output.assign(N * blocks, false);
 
