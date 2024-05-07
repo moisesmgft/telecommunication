@@ -70,6 +70,13 @@ void decode(vector<bool> &input, vector<vector<int>> &graph, int N, vector<bool>
 
     int M = graph.size(), blocks = 0;
 
+
+    while(N * blocks < input.size())
+        blocks++;
+
+    while(input.size() > N*blocks)
+        input.pop_back();
+
     bool change = true;
     while(max_iterations-- && change) {
 
