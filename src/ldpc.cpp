@@ -50,7 +50,7 @@ void create_graph(int n, int dv, int dc, vector<vector<int>> &edges){
                 current++;
                 info_uses[value]++;
                 edges[i].push_back(value);
-                if(info_uses[value] >= dc) {
+                if(info_uses[value] >= dv) {
                     rem.push_back(value);
                 }
             }
@@ -58,6 +58,11 @@ void create_graph(int n, int dv, int dc, vector<vector<int>> &edges){
         }
         for(auto value : rem) 
             parity.erase(value);
+    }
+
+    if(!parity.empty()){
+        edges.clear();
+        create_graph(n, dv, dc, edges);
     }
 }
 

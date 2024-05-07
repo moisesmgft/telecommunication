@@ -20,7 +20,7 @@ int main() {
         vector<vector<int>> local, inv;
         int num = p;
         ldpc::create_graph(num, 3, 4, local);
-        ldpc::invert_graph(local, inv, num);
+        // ldpc::invert_graph(local, inv, num);
         edges[p] = local;
         inverted_edges[p] = inv;
     }
