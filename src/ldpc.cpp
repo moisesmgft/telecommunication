@@ -3,6 +3,7 @@
 #include <iterator>
 #include <random>
 #include <unordered_set>
+#include <set>
 #include <algorithm>
 
 namespace ldpc {
@@ -34,25 +35,30 @@ void create_graph(int n, int dv, int dc, vector<vector<int>> &edges){
     edges.resize(m);
 
     vector<int> info_uses(n);
+    vector<int> pari_uses(m);
+    
+    std::set<int> parity;
+    for(int i = 0; i < n; i++) 
+        parity.insert(i);
 
     for(int i = 0; i < m; i++) {
-        vector<int> rd = random_vector(dc, remain);
-        
-        int count = 0, current = 0;
-        for(int j = 0; j < n; j++, count++) {
-            if(count == rd[current] && info_uses[j] < dv) {
+        vector<int> rd = random_vector(dc, parity.size());
+        int k = 0, current = 0;
+        vector<int> rem;
+        for(auto value : parity) {
+            if(k == rd[current]) {
                 current++;
-                info_uses[j]++;
-                edges[i].push_back(j);
-                if(info_uses[j] >= dv) {
-                    remain--;
+                info_uses[value]++;
+                edges[i].push_back(value);
+                if(info_uses[value] >= dc) {
+                    rem.push_back(value);
                 }
-            } else if(info_uses[j] >= dv) {
-                count--;
             }
+            k++;
         }
+        for(auto value : rem) 
+            parity.erase(value);
     }
-
 }
 
 void encode(vector<bool> &input, vector<vector<int>> &graph, int N, vector<bool> &output) {
