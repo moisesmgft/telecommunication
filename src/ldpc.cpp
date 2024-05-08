@@ -74,8 +74,8 @@ void decode(vector<bool> &input, vector<vector<int>> &graph, int N, vector<bool>
     while(N * blocks < input.size())
         blocks++;
 
-    while(input.size() > N*blocks)
-        input.pop_back();
+    while(input.size() < N*blocks)
+        input.emplace_back(0);
 
     bool change = true;
     while(max_iterations-- && change) {
@@ -104,7 +104,8 @@ void decode(vector<bool> &input, vector<vector<int>> &graph, int N, vector<bool>
 
     }
 
-    output = input;
+    for (int i = 0; i < input.size(); i++)
+        output.emplace_back(input[i]);
     
 }
 

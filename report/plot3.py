@@ -1,8 +1,8 @@
 import pandas as pd
 
 # Load the CSV files into DataFrames
-rate12_df = pd.read_csv(f"./rate12.csv")
-hamming_df = pd.read_csv(f"./hamming.csv")
+rate12_df = pd.read_csv(f"./data/rate37.csv")
+hamming_df = pd.read_csv(f"./data/hamming.csv")
 
 # Display the first few rows of each DataFrame to understand their structure
 (rate12_df.head(), hamming_df.head())
