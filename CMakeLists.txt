@@ -14,11 +14,14 @@ add_library(Hamming src/hamming.cpp)
 add_library(lpdc src/ldpc.cpp)
 add_library(MR src/mr.cpp)
 add_library(Bits src/bits.cpp)
+add_library(BPSK src/bpsk.cpp)
 
 # Add the executable
 add_executable(Lab1 lab1.cpp)
 add_executable(Lab2 lab2.cpp)
+add_executable(Lab3 lab3.cpp)
 
 # Link libraries with the executable
 target_link_libraries(Lab1 PUBLIC Hamming MR Bits)
 target_link_libraries(Lab2 PUBLIC Hamming MR Bits lpdc)
+target_link_libraries(Lab3 PUBLIC Bits lpdc BPSK)

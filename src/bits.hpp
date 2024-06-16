@@ -13,6 +13,8 @@ void communicate_bits_through_bsc(const vector<bool> &input, vector<bool> &outpu
 
 double error_percentage(const vector<bool>& original, const vector<bool> &decoded);
 
+void communicate_bits_through_awgn(const vector<bool> &input, vector<bool> &output, float var);
+
 };
 
 #endif // BITS_HPP
