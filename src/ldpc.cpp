@@ -66,6 +66,18 @@ void create_graph(int n, int dv, int dc, vector<vector<int>> &edges){
     }
 }
 
+void invert_graph(const vector<vector<int>> &original, int n, vector<vector<int>> &output) {
+    int dc = original[0].size(), m = original.size(), dv;
+    dv = dc * m / n;
+    output.resize(n);
+
+    for(int i = 0; i < m; i++) {
+        for(int j = 0; j < original[i].size(); j++) {
+            output[original[i][j]].push_back(i);
+        }
+    }
+}
+
 void decode(vector<bool> &input, vector<vector<int>> &graph, int N, vector<bool> &output, int max_iterations) {
 
     int M = graph.size(), blocks = 0;
