@@ -11,15 +11,17 @@ using namespace std;
 int main() {
 
     const string file_path = "../data/lab3_results.csv";
+    const string g_file_path = "../data/lab3_graph.csv";
     const float Es = 1.0;
     const float eps = 1e-3;
     const size_t input_size = 999999;
 
     ofstream file(file_path);
+    ofstream gfile(g_file_path);
     cout << fixed << setprecision(8);
     file << fixed << setprecision(8);
-    cout << "SNR,\"No decoding\", Demodulated\n";
-    file << "SNR,\"No decoding\", Demodulated\n";
+    cout << "SNR,\"No decoding\",Demodulated\n";
+    file << "SNR,\"No decoding\",Demodulated\n";
     
     vector<int> original(input_size,0);
     vector<float> modulated;
@@ -27,6 +29,12 @@ int main() {
     vector<vector<int>> c_graph, v_graph;
     ldpc::create_graph(1001, 3, 7, c_graph);
     ldpc::invert_graph(c_graph, 1001, v_graph);
+    for(auto v_node_edges : v_graph) {
+        for(auto c_node : v_node_edges) {
+            gfile << c_node << ",";
+        }
+        gfile << "\n";
+    }
     for (float snr = 0.0; snr <= 5.0 + eps; snr += 0.5) {
         // snr = 10 log10(1/n0) => 10 ^ (snr/10) = 1 / n0
         float N0 = 1 / pow(10.0F, snr / 10.0F);
