@@ -30,10 +30,9 @@ int main() {
     ldpc::create_graph(1001, 3, 7, c_graph);
     ldpc::invert_graph(c_graph, 1001, v_graph);
     for(auto v_node_edges : v_graph) {
-        for(auto c_node : v_node_edges) {
-            gfile << c_node << ",";
+        for(auto it = v_node_edges.begin(); it != v_node_edges.end(); it++) {
+            gfile << *it << (it != prev(v_node_edges.end()) ? "," : "\n");
         }
-        gfile << "\n";
     }
     for (float snr = 0.0; snr <= 5.0 + eps; snr += 0.5) {
         // snr = 10 log10(1/n0) => 10 ^ (snr/10) = 1 / n0
@@ -44,8 +43,8 @@ int main() {
         bits::communicate_bits_through_awgn(modulated, past_gaussian, var);
 
         vector<int> demodulated, no_decoding;
-        bpsk::decode(past_gaussian, no_decoding, v_graph, 1, 7, 1001);
-        bpsk::decode(past_gaussian, demodulated, v_graph, 1000, 7, 1001);
+        bpsk::decode(past_gaussian, no_decoding, v_graph, 1, 7, 1001, var);
+        bpsk::decode(past_gaussian, demodulated, v_graph, 1000, 7, 1001, var);
 
         double demodulated_error = bits::error_percentage(original, demodulated);
         double no_decoding_error = bits::error_percentage(original, no_decoding);

@@ -8,9 +8,15 @@ void bpsk::encode(vector<int> &input, vector<float> &output) {
             output[i] = -1.0;
 }
 
-void bpsk::decode(const vector<float> &input, vector<int> &output, const vector<vector<int>>& graph, int max_iterations, int dc, int block_size) {
+void bpsk::decode(const vector<float> &input, vector<int> &output, const vector<vector<int>>& graph, int max_iterations, int dc, int block_size, float var) {
     int dv = graph[0].size(), n = graph.size(), blocks = 0;
     vector<vector<int>> c_edges(n*dv/dc);
+
+    vector<float> new_input = input;
+
+    for(int i = 0; i < new_input.size(); i++) {
+        new_input[i] = 2*new_input[i] / var;
+    }
 
     for(int i = 0; i < n; i++) {
         for(int j = 0; j < dv; j++) {
@@ -18,10 +24,10 @@ void bpsk::decode(const vector<float> &input, vector<int> &output, const vector<
         }
     }
     
-    while(block_size * blocks < input.size())
+    while(block_size * blocks < new_input.size())
         blocks++;
 
-    output.resize(input.size(), 1);
+    output.resize(new_input.size(), 1);
     
     for(int b = 0; b < blocks; b++){
         vector<float> edges(n*dv, 0);
@@ -31,7 +37,7 @@ void bpsk::decode(const vector<float> &input, vector<int> &output, const vector<
             vector<float> copy(n*dv);
             for(int i = 0; i < n; i++) {
                 for(int j = i*dv; j < (i+1)*dv; j++) {
-                    copy[j] = input[block_size*b + i];
+                    copy[j] = new_input[block_size*b + i];
                     for(int k = i*dv; k < (i+1)*dv; k++) {
                         if(k != j) {
                             copy[j] += edges[k];
@@ -74,7 +80,7 @@ void bpsk::decode(const vector<float> &input, vector<int> &output, const vector<
         }
 
         for(int i = 0; i < n; i++) {
-            float res = input[block_size*b + i];
+            float res = new_input[block_size*b + i];
             for(int j = i*dv; j < (i+1)*dv; j++) {
                 res += edges[j];
             }
