@@ -54,6 +54,19 @@ double error_percentage(const vector<int> &original, const vector<int> &decoded)
     return double(error) / double(size);
 }
 
+
+double error_percentage(const vector<int> &original, const vector<bool> &decoded) {
+
+    int size = min(original.size(), decoded.size());
+    int error = 0;
+    
+    for (int i = 0; i < size; i++)
+        if (original[i] != decoded[i])
+            error++;
+
+    return double(error) / double(size);
+}
+
 void communicate_bits_through_awgn(const vector<float> &input, vector<float> &output, float var) {
     output.clear();
 

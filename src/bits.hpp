@@ -15,6 +15,8 @@ double error_percentage(const vector<bool>& original, const vector<bool> &decode
 
 double error_percentage(const vector<int>& original, const vector<int> &decoded);
 
+double error_percentage(const vector<int> &original, const vector<bool> &decoded);
+
 void communicate_bits_through_awgn(const vector<float> &input, vector<float> &output, float var);
 
 };

@@ -13,9 +13,9 @@ int main() {
     
     const string file_path = "../data/lab4_results.csv";
     const string g_file_path = "../data/lab4_graph.csv";
-    const float Es = 1.0;
+    const float Es = 1.0 * (10.0 / 7.0);
     const float eps = 1e-3;
-    const size_t input_size = 999999*5;
+    const size_t input_size = 999999;
 
     ofstream file(file_path);
     ofstream gfile(g_file_path);
@@ -36,8 +36,8 @@ int main() {
         }
     }
     for (float snr = 0.0; snr <= 5.0 + eps; snr += 0.5) {
-        // snr = 10 log10(1/n0) => 10 ^ (snr/10) = 1 / n0
-        float N0 = 1 / pow(10.0F, snr / 10.0F);
+        // snr = 10 log10(Es/n0) => 10 ^ (snr/10) = Es / n0
+        float N0 = Es / pow(10.0F, snr / 10.0F);
         float var = N0 / 2.0F;
 
         vector<float> past_gaussian;
@@ -45,17 +45,14 @@ int main() {
         bits::communicate_bits_through_awgn(modulated, past_gaussian, var);
         bpsk::to_binary(past_gaussian, past_gaussian_bin);
 
-        vector<int> uncoded_result, bpsk_result, hamming_result, bit_flip_result;
-        vector<bool> hamming_result_bool, bit_flip_result_bool;
+        vector<int> uncoded_result, bpsk_result;
+        vector<bool> hamming_result, bit_flip_result;
         bpsk::decode(past_gaussian, uncoded_result, v_graph, 1, 7, 1001, var);
         bpsk::decode(past_gaussian, bpsk_result, v_graph, 50, 7, 1001, var);
-        ldpc::decode(past_gaussian_bin, v_graph,  input_size, bit_flip_result_bool, 30);
-        hamming::decode(past_gaussian_bin, hamming_result_bool);
+        ldpc::decode(past_gaussian_bin, v_graph,  input_size, bit_flip_result, 50);
+        hamming::decode(past_gaussian_bin, hamming_result);
 
-        for (auto i: bit_flip_result_bool) bit_flip_result.push_back(i);
-        for (auto i: hamming_result_bool) hamming_result.push_back(i);
-
-        double uncoded_error = bits::error_percentage(original, uncoded_result);
+        double uncoded_error = bits::error_percentage(original, past_gaussian_bin);
         double hamming_error = bits::error_percentage(original, hamming_result);
         double bit_flip_error = bits::error_percentage(original, bit_flip_result);
         double bpsk_error = bits::error_percentage(original, bpsk_result);
