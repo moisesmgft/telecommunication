@@ -1,14 +1,16 @@
 #include "bpsk.hpp"
 #include <cmath>
 
-void bpsk::encode(vector<int> &input, vector<float> &output) {
+namespace bpsk {
+
+void encode(vector<int> &input, vector<float> &output) {
     output.assign(input.size(), 1.0);
     for (int i = 0; i < (int)input.size(); i++)
         if (input[i])
             output[i] = -1.0;
 }
 
-void bpsk::decode(const vector<float> &input, vector<int> &output, const vector<vector<int>>& graph, int max_iterations, int dc, int block_size, float var) {
+void decode(const vector<float> &input, vector<int> &output, const vector<vector<int>>& graph, int max_iterations, int dc, int block_size, float var) {
     int dv = graph[0].size(), n = graph.size(), blocks = 0;
     vector<vector<int>> c_edges(n*dv/dc);
 
@@ -87,4 +89,12 @@ void bpsk::decode(const vector<float> &input, vector<int> &output, const vector<
             if(res >= 0) output[block_size*b + i] = 0;
         }
     }
+}
+
+void to_binary(const vector<float>& input, vector<bool>& output) {
+    output.assign(input.size(), false);
+    for (int i = 0; i < input.size(); i++) if (input[i] < 0)
+        output[i] = true;
+}
+
 }

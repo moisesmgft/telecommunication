@@ -11,6 +11,8 @@ void encode(vector<int>& input, vector<float>& output);
 
 void decode(const vector<float>& input, vector<int>& output, const vector<vector<int>>& graph, int max_iterations, int dc, int block_size, float var);
 
+void to_binary(const vector<float>& input, vector<bool>& output);
+
 };
 
 #endif // BPSK_HPP
