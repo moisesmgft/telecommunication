@@ -10,15 +10,17 @@ void encode(vector<int> &input, vector<float> &output) {
             output[i] = -1.0;
 }
 
-void decode(const vector<float> &input, vector<int> &output, const vector<vector<int>>& graph, int max_iterations, int dc, int block_size, float var) {
+void decode(vector<float> &input, vector<int> &output, const vector<vector<int>>& graph, int max_iterations, int dc, int block_size, float var) {
     int dv = graph[0].size(), n = graph.size(), blocks = 0;
     vector<vector<int>> c_edges(n*dv/dc);
-
     vector<float> new_input = input;
 
     for(int i = 0; i < new_input.size(); i++) {
         new_input[i] = 2*new_input[i] / var;
     }
+
+    while(new_input.size() % (block_size) != 0)
+        new_input.emplace_back(1.0);
 
     for(int i = 0; i < n; i++) {
         for(int j = 0; j < dv; j++) {
