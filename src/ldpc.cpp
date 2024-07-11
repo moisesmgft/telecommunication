@@ -78,7 +78,7 @@ void invert_graph(const vector<vector<int>> &original, int n, vector<vector<int>
     }
 }
 
-void decode(vector<bool> &input, vector<vector<int>> &graph, int N, vector<bool> &output, int max_iterations) {
+void decode(vector<bool> input, vector<vector<int>> &graph, int N, vector<bool> &output, int max_iterations) {
 
     int M = graph.size(), blocks = 0;
 
